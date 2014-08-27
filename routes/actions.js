@@ -21,7 +21,7 @@ var myCities = [{state: 'CA' ,city: 'Campbell'}, {state: 'NE' ,city: 'Omaha'}, {
 
 myWeatherDataArr = [];
 
-var apiKey = 'f1ceb102ad8ae3df';
+var apiKey = '61268b47323f369c';
 var urlPrefix = 'http://api.wunderground.com/api/'+apiKey+'/conditions/q/';
 var url;
 

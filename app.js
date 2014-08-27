@@ -35,7 +35,6 @@ app.use(bodyParser());
 app.use(function(req, res, next){                           
     console.log('\n\nMethod: '+req.method); 
     console.log('URL: '+req.url); 
-    console.log('Form: '+req.form);
     if(typeof req.query.city === 'undefined')
         console.log('Query Parameters: None');  
     else
