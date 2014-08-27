@@ -60,6 +60,6 @@ app.use(require('./routes/actions'));
 *
 */
 app.listen(port_no, function(){
-    console.log('Server is up and running at localhost:'+ port_no);
+    console.log('\n\t\t\tServer is up and running at localhost:'+ port_no);
 });
 
