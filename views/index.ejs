@@ -1,0 +1,46 @@
+<doctype html>
+<html lang = "en">
+<head>
+	<meta charset = "UTF-8" >
+	<title>Weather Data </title>
+	<link rel = "stylesheet" href = "bootstrap/dist/css/bootstrap.css">
+</head>
+	<body>
+		<div class = "container">
+			<h1><p align = "center"> Weather Data - Wunderground</p></h1>
+			<h3> <p align = "center"> <%= new Date() %> </p> </h3>
+			<p align = "center">
+			<table border="1" style="width:1000px">
+				<tr>
+					<th align = "center">Location</th>
+					<th align = "center">Weather</th>	
+					<th align = "center">Temperature</th>		
+					<th align = "center">Humidity</th>
+					<th align = "center">Wind</th>
+					<th align = "center">Feels Like</th>
+				</tr>				
+				<% for(var i = 0; i < data.length; i++){ %>
+				<tr>
+					<td><%= data[i].locationName %></td>
+					<td><%= data[i].weather %></td>	
+					<td><%= data[i].temperature_string %></td>		
+					<td><%= data[i].relative_humidity %></td>
+					<td><%= data[i].wind_string %></td>
+					<td><%= data[i].feelslike_string %></td>				
+				</tr>
+				<% }  %>
+			</table>
+			</p>		
+			<form action = "/add" method = "get" name = "AddItem">
+				<p align = "center">
+					<input type = "text" name = "city" placeholder = "City">
+					<input type = "text" name = "state" placeholder = "State">
+					<input type = "submit" name = "submit" value = "Get Weather">
+				</p>
+			</form>
+			<p align ="right"> <img border = "0" src="WuLogo.jpg" alt="Wunderground" width="300" height="106"> </p>
+		</div>
+		<script src = "jquery/dist/jquery.js"></script>
+		<script src = "bootstrap/dist/js/bootstrap.js"></script>
+	</body>
+</html>
