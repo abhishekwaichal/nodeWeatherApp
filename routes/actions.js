@@ -1,30 +1,55 @@
 
+/*
+* Different Routes can be defined in different js files
+* This helps in seperation of concerns.
+* New dyncamically required routes can be defined, making new functionality developement more flexible.
+**/
+
+
+/*
+* 
+* Declare all the Requirements ( /Required Modeules)
+*
+*/
 var express = require('express');
+var request  = require('request');
 
 var router = express.Router(); 
 
+// Default Cities - whose data is pulled at startup
 var myCities = [{state: 'CA' ,city: 'Campbell'}, {state: 'NE' ,city: 'Omaha'}, {state: 'TX' ,city: 'Austin'}, {state: 'MD' ,city: 'Timonium'} ]
-var request  = require('request');
 
 myWeatherDataArr = [];
-var key = 'f1ceb102ad8ae3df';
-var urlPrefix = 'http://api.wunderground.com/api/'+key+'/conditions/q/';
+
+var apiKey = 'f1ceb102ad8ae3df';
+var urlPrefix = 'http://api.wunderground.com/api/'+apiKey+'/conditions/q/';
 var url;
 
+/*
+*
+* Actual Routes
+*
+*/
 router.get('/', function(req, res){
 
 	var j = -1;
+
 	for (var i = 0; i < myCities.length; i++) {			
+
 		url = urlPrefix + myCities[i].state + '/' + myCities[i].city + '.json'; 
+
+		// Delegate call to the method to handle request to the Wunderground API
 		getData(url, function(aWeatherData){
+
 			myWeatherDataArr.push(aWeatherData);
 			//console.log(j);
 			j++;
-			if(j == 3)
+			// Only invoke the render function to render the view 
+			if(j == 3){
 				res.render('index', { data: myWeatherDataArr });
+			}
 		});	
 	};
-
 });
 
 
@@ -43,12 +68,18 @@ router.get('/add', function(req, res){
 
 	// call to the interface to
 	getData(url, function(aWeatherData){
+	
 		myWeatherDataArr.push(aWeatherData);
 		res.render('index', { data: myWeatherDataArr });
 	});				
 });
 
 
+/*
+*
+* Utility Function - Requesting Wunderground API
+*
+*/
 function getData(apiCall, callback){
 
 var myWeatherData = new Object();
@@ -77,4 +108,10 @@ request(apiCall, function (error, response, body) {
 	});	
 };
 
+
+/*
+*
+* Expose(/Export) this Router to the App
+*
+*/
 module.exports = router;

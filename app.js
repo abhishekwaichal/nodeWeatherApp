@@ -1,24 +1,38 @@
 
-
+/*
+* 
+* Declare all the Requirements( /Required Modules)
+*
+*/
 var express = require('express');
 var path = require('path');
-//var http  = require('http');
 var bodyParser = require('body-parser');
 
 var app = express();
 
-//Configure app
+/*
+* 
+* Configure the App
+*
+*/
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views')) ;
 
-//Use middleware
-app.use(bodyParser());
-//app.use(bodyParser.urlencoded());
+/*
+*
+* Use Middleware
+*
+*/
+
+// Express's Static Middleware to load Static Resources
 app.use(express.static(path.join(__dirname, 'bower_components')));
 app.use(express.static(path.join(__dirname, 'images')));
 
-app.use(function(req, res, next){                           // User defined Logging Middleware
-    //Parameter(S)-form,url, etc.& Methods      
+// Use this module to collect the request parameters
+app.use(bodyParser());
+
+// Logging Middleware -  to log request information (Helpful for Debugging)
+app.use(function(req, res, next){                           
     console.log('\n\nMethod: '+req.method); 
     console.log('URL: '+req.url); 
     console.log('Form: '+req.form);
@@ -30,11 +44,19 @@ app.use(function(req, res, next){                           // User defined Logg
 });
 
 
-//Define routes
-
+/*
+*
+* Define routes
+*
+*/
+// Leverage the router defined as 'action.js'
 app.use(require('./routes/actions'));
 
-// Start Server
+/*
+*
+* Start Server
+*
+*/
 app.listen(7997, function(){
     console.log('Ready on port 7997');
 });
