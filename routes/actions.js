@@ -41,13 +41,22 @@ router.get('/', function(req, res){
 		// Delegate call to the method to handle request to the Wunderground API
 		getData(url, function(aWeatherData){
 
-			myWeatherDataArr.push(aWeatherData);
-			//console.log(j);
+
+		if(typeof aWeatherData === 'undefined'){
 			j++;
-			// Only invoke the render function to render the view 
 			if(j == 3){
-				res.render('index', { data: myWeatherDataArr });
-			}
+				res.render('index', { data: myWeatherDataArr, errMsg: 'ERROR: Wunderground Server not a responding.' });	
+			}		
+		}
+		else{
+				myWeatherDataArr.push(aWeatherData);
+				//console.log(j);
+				j++;
+				// Only invoke the render function to render the view 
+				if(j == 3){
+					res.render('index', { data: myWeatherDataArr, errMsg:'' });
+				}
+			}	
 		});	
 	};
 });
@@ -57,6 +66,7 @@ router.get('/add', function(req, res){
 
 	var city = req.query.city;
 	var state = req.query.state;
+	var orig_city = city;
 
 	city = city.split(' ').join('_');
 
@@ -68,9 +78,14 @@ router.get('/add', function(req, res){
 
 	// call to the interface to
 	getData(url, function(aWeatherData){
-	
-		myWeatherDataArr.push(aWeatherData);
-		res.render('index', { data: myWeatherDataArr });
+		
+		if(typeof aWeatherData === 'undefined'){
+			res.render('index', { data: myWeatherDataArr, errMsg: 'ERROR:'+orig_city+', '+state+' not a recognized location.' });	
+		}
+		else{
+			myWeatherDataArr.push(aWeatherData);
+			res.render('index', { data: myWeatherDataArr, errMsg:'' });
+		}
 	});				
 });
 
@@ -89,21 +104,25 @@ var data;
 request(apiCall, function (error, response, body) {
 
 	if (!error && response.statusCode == 200) {
-
+		
 	  	data = JSON.parse(body);
 
-	  	myWeatherData.locationName = data.current_observation.display_location.full;
-	  	myWeatherData.weather = data.current_observation.weather; 
-	  	myWeatherData.temperature_string = data.current_observation.temperature_string;
-	  	myWeatherData.relative_humidity = data.current_observation.relative_humidity;
-	  	myWeatherData.wind_string = data.current_observation.wind_string;
-	  	myWeatherData.feelslike_string = data.current_observation.feelslike_string;
+		if(typeof data.current_observation === 'undefined'){
+			console.error('\nERRROR: Invalid City/State\'s data requested ! \n');
+			callback(undefined);
+		}
+		else{
 
-	  	callback(myWeatherData);
+		  	myWeatherData.locationName = data.current_observation.display_location.full;
+		  	myWeatherData.weather = data.current_observation.weather; 
+		  	myWeatherData.temperature_string = data.current_observation.temperature_string;
+		  	myWeatherData.relative_humidity = data.current_observation.relative_humidity;
+		  	myWeatherData.wind_string = data.current_observation.wind_string;
+		  	myWeatherData.feelslike_string = data.current_observation.feelslike_string;
+
+		  	callback(myWeatherData);
+	  	}
 	  }	
-	  else {
-	  	console.log('Invalid City/State'); 
-	  };
 	 //console.log(myWeatherData);
 	});	
 };
