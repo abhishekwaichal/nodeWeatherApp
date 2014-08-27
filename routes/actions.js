@@ -50,6 +50,16 @@ router.get('/', function(req, res){
 		}
 		else{
 				myWeatherDataArr.push(aWeatherData);
+				var arr = {};
+				// Inorder to guarantee same city's weather is not displayed,
+				// we explicitly remove such entries.
+				for ( var i=0; i < myWeatherDataArr.length; i++ )
+				    arr[myWeatherDataArr[i].locationName] = myWeatherDataArr[i];
+
+				myWeatherDataArr = new Array();
+				for ( var key in arr )
+				    myWeatherDataArr.push(arr[key]);
+				
 				//console.log(j);
 				j++;
 				// Only invoke the render function to render the view 
@@ -84,6 +94,16 @@ router.get('/add', function(req, res){
 		}
 		else{
 			myWeatherDataArr.push(aWeatherData);
+			var arr = {};
+			// Inorder to guarantee same city's weather is not displayed,
+			// we explicitly remove such entries.
+			for ( var i=0; i < myWeatherDataArr.length; i++ )
+			    arr[ myWeatherDataArr[i].locationName] = myWeatherDataArr[i];
+
+			myWeatherDataArr = new Array();
+			for ( var key in arr )
+			    myWeatherDataArr.push(arr[key]);
+			
 			res.render('index', { data: myWeatherDataArr, errMsg:'' });
 		}
 	});				

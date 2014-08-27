@@ -10,6 +10,8 @@ var bodyParser = require('body-parser');
 
 var app = express();
 
+var port_no = 7997;
+
 /*
 * 
 * Configure the App
@@ -26,7 +28,8 @@ app.set('views', path.join(__dirname, 'views')) ;
 
 // Express's Static Middleware to load Static Resources
 app.use(express.static(path.join(__dirname, 'bower_components')));
-app.use(express.static(path.join(__dirname, 'images')));
+app.use(express.static(path.join(__dirname, 'public/images')));
+app.use(express.static(path.join(__dirname, 'public/stylesheets')));
 
 // Use this module to collect the request parameters
 app.use(bodyParser());
@@ -56,7 +59,7 @@ app.use(require('./routes/actions'));
 * Start Server
 *
 */
-app.listen(7997, function(){
-    console.log('Ready on port 7997');
+app.listen(port_no, function(){
+    console.log('Server is up and running at localhost:'+ port_no);
 });
 
