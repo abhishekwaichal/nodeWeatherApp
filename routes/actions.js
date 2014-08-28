@@ -51,9 +51,9 @@ router.get('/', function(req, res){
 		else{
 				myWeatherDataArr.push(aWeatherData);
 				var arr = {};
-				// Inorder to guarantee same city's weather is not displayed,
+				// Inorder to guarantee same cities weather is not displayed,
 				// we explicitly remove such entries.
-				for ( var i=0; i < myWeatherDataArr.length; i++ )
+				for ( var i = 0; i < myWeatherDataArr.length; i++ )
 				    arr[myWeatherDataArr[i].locationName] = myWeatherDataArr[i];
 
 				myWeatherDataArr = new Array();
@@ -62,7 +62,9 @@ router.get('/', function(req, res){
 				
 				//console.log(j);
 				j++;
-				// Only invoke the render function to render the view 
+
+				// Only invoke the render function to render the view,
+				// when all cities weather details have been populated.
 				if(j == 3){
 					res.render('index', { data: myWeatherDataArr, errMsg:'' });
 				}
@@ -80,13 +82,13 @@ router.get('/add', function(req, res){
 
 	city = city.split(' ').join('_');
 
-//	console.log(myWeatherDataArr);	
-//	console.log(city);
-//	console.log(state);
+	// console.log(myWeatherDataArr);	
+	// console.log(city);
+	// console.log(state);
 
 	url = urlPrefix + state + '/' + city + '.json';
 
-	// call to the interface to
+	// Delegate call to the method to handle request to the Wunderground API
 	getData(url, function(aWeatherData){
 		
 		if(typeof aWeatherData === 'undefined'){
@@ -95,7 +97,7 @@ router.get('/add', function(req, res){
 		else{
 			myWeatherDataArr.push(aWeatherData);
 			var arr = {};
-			// Inorder to guarantee same city's weather is not displayed,
+			// Inorder to guarantee same cities weather is not displayed,
 			// we explicitly remove such entries.
 			for ( var i=0; i < myWeatherDataArr.length; i++ )
 			    arr[ myWeatherDataArr[i].locationName] = myWeatherDataArr[i];
