@@ -2,7 +2,7 @@
 /*
 * Different Routes can be defined in different js files
 * This helps in seperation of concerns.
-* New dyncamically required routes can be defined, making new functionality developement more flexible.
+* New dynamically required routes can be defined, making new functionality developement more flexible.
 **/
 
 
@@ -119,34 +119,34 @@ router.get('/add', function(req, res){
 */
 function getData(apiCall, callback){
 
-var myWeatherData = new Object();
-var data;
-//console.log(apiCall);
+	var myWeatherData = new Object();
+	var data;
+	//console.log(apiCall);
 
-request(apiCall, function (error, response, body) {
+	request(apiCall, function (error, response, body) {
 
-	if (!error && response.statusCode == 200) {
-		
-	  	data = JSON.parse(body);
+		if (!error && response.statusCode == 200) {
+			
+		  	data = JSON.parse(body);
 
-		if(typeof data.current_observation === 'undefined'){
-			console.error('\nERRROR: Invalid City/State\'s data requested ! \n');
-			callback(undefined);
-		}
-		else{
+			if(typeof data.current_observation === 'undefined'){
+				console.error('\nERRROR: Invalid City/State\'s data requested ! \n');
+				callback(undefined);
+			}
+			else{
 
-		  	myWeatherData.locationName = data.current_observation.display_location.full;
-		  	myWeatherData.weather = data.current_observation.weather; 
-		  	myWeatherData.temperature_string = data.current_observation.temperature_string;
-		  	myWeatherData.relative_humidity = data.current_observation.relative_humidity;
-		  	myWeatherData.wind_string = data.current_observation.wind_string;
-		  	myWeatherData.feelslike_string = data.current_observation.feelslike_string;
+			  	myWeatherData.locationName = data.current_observation.display_location.full;
+			  	myWeatherData.weather = data.current_observation.weather; 
+			  	myWeatherData.temperature_string = data.current_observation.temperature_string;
+			  	myWeatherData.relative_humidity = data.current_observation.relative_humidity;
+			  	myWeatherData.wind_string = data.current_observation.wind_string;
+			  	myWeatherData.feelslike_string = data.current_observation.feelslike_string;
 
-		  	callback(myWeatherData);
-	  	}
-	  }	
-	 //console.log(myWeatherData);
-	});	
+			  	callback(myWeatherData);
+		  	}
+		  }	
+		 //console.log(myWeatherData);
+		});	
 };
 
 
